@@ -5,7 +5,7 @@
 
 typedef struct {
     int key;
-} Input; 
+} Input;
 
 Input* input_create();
 void input_destroy(Input* input);

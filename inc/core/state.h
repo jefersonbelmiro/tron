@@ -8,6 +8,6 @@ typedef struct Game Game;
 typedef struct {
     void (*update)(Game* game);
     void (*draw)(Game* game);
-} State; 
+} State;
 
 #endif

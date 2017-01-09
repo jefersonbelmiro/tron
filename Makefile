@@ -28,4 +28,4 @@ test:
 
 format: 
 	astyle --style="k&r" $(shell find src -type f) $(shell find inc -type f)
-	rm $(find . -type f | grep '\.orig')
+	find . -name '*.orig' -delete
