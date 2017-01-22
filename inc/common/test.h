@@ -24,6 +24,8 @@
     int (*teardown)(void* fn) = Test_teardown;\
     Test_describe(describe_label);\
     block\
+    /* just for error: unused variable */ \
+    (void)it;\
     (void)setup;\
     (void)teardown;\
 } while(0)

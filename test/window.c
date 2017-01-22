@@ -1,18 +1,9 @@
 #include "common/test.h"
 #include "core/window.h"
 
-#include <ncurses.h>
-
 Window* window = NULL;
 int width = 40;
 int height = 20;
-
-static bool window_has_string(int x, int y, char* string)
-{
-    char buf[1024];
-    mvinnstr(y, x, buf, strlen(string));
-    return strcmp(string, buf) == 0;
-}
 
 void test_draw()
 {
@@ -38,7 +29,7 @@ void test_setup()
 
 void test_teardown()
 {
-    window_restore();
+    window_destroy(window);
 }
 
 int main(int argc, char* argv[]) 
