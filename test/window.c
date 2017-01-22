@@ -20,15 +20,15 @@ void test_draw()
     window_draw_char(5, 5, 'a');
     window_refresh();
 
-    ASSERT(window_has_string(0, 0, "test draw"));
-    ASSERT(window_has_string(10, 0, "string"));
-    ASSERT(window_has_string(5, 5, "a"));
+    assert(window_has_string(0, 0, "test draw"));
+    assert(window_has_string(10, 0, "string"));
+    assert(window_has_string(5, 5, "a"));
 }
 
 void test_sizes()
 {
-    ASSERT(window->width >= width);
-    ASSERT(window->height >= height);
+    assert(window->width >= width);
+    assert(window->height >= height);
 }
 
 void test_setup()

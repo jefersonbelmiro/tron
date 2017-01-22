@@ -13,10 +13,10 @@ void test_add_elements()
     array_push(array, &t2, &array_length, &array_size); 
     array_push(array, &t3, &array_length, &array_size);
 
-    ASSERT(array_length == 3); 
-    ASSERT(*((int*) array_get(array, 0, array_length)) == 10);
-    ASSERT(*((int*) array_get(array, 1, array_length)) == t2);
-    ASSERT(array_get(array, 2, array_length) == &t3);
+    assert_equal(array_length, 3); 
+    assert_equal(*((int*) array_get(array, 0, array_length)), 10);
+    assert_equal(*((int*) array_get(array, 1, array_length)), t2);
+    assert_equal(array_get(array, 2, array_length), &t3);
 }
 
 void test_access_boundings() 
@@ -24,33 +24,33 @@ void test_access_boundings()
     int t1 = 33;
     array_set(array, 5, &t1, &array_length, &array_size);
 
-    ASSERT(!array_has(array, 1, array_length));
-    ASSERT(array_get(array, 1, array_length) == NULL);
+    assert_equal(array_has(array, 1, array_length), false);
+    assert_equal(array_get(array, 1, array_length), NULL);
     for (int i = 0; i < 5; i++) {
-        ASSERT(!array_has(array, i, array_length));
-        ASSERT(array_get(array, i, array_length) == NULL);
+        assert_equal(array_has(array, i, array_length), false);
+        assert_equal(array_get(array, i, array_length), NULL);
     }
 
-    ASSERT(array_has(array, 5, array_length));
-    ASSERT(!array_has(array, 200, array_length));
+    assert_equal(array_has(array, 5, array_length), true);
+    assert_equal(array_has(array, 200, array_length), false);
 
-    ASSERT(array_get(array, 5, array_length) == &t1);
-    ASSERT(array_get(array, 200, array_length) == NULL);
+    assert_equal(array_get(array, 5, array_length), &t1);
+    assert_equal(array_get(array, 200, array_length), NULL);
 }
 
 void test_check_position() 
 {
-    ASSERT(!array_has(array, 0, array_length));
+    assert_equal(array_has(array, 0, array_length), false);
     array_push(array, (void*) 1, &array_length, &array_size);
-    ASSERT(array_has(array, 0, array_length));
+    assert_equal(array_has(array, 0, array_length), true);
 }
 
 void test_delete_position()
 {
     array_push(array, (void *) 33, &array_length, &array_size);
-    ASSERT(array_has(array, 0, array_length));
+    assert_equal(array_has(array, 0, array_length), true);
     array_delete(array, 0, &array_length);
-    ASSERT(!array_has(array, 0, array_length));
+    assert_equal(array_has(array, 0, array_length), false);
 }
 
 void test_delete_range()
@@ -61,15 +61,15 @@ void test_delete_range()
         array_push(array, &t1[i], &array_length, &array_size);
     }
 
-    ASSERT(array_length == 6);
+    assert_equal(array_length, 6);
 
     array_splice(array, 2, 3, &array_length);
 
-    ASSERT(array_length == 3);
+    assert_equal(array_length, 3);
 
-    ASSERT(array_get(array, 0, array_length) == &t1[0]);
-    ASSERT(array_get(array, 1, array_length) == &t1[1]);
-    ASSERT(array_get(array, 2, array_length) == &t1[5]);
+    assert_equal(array_get(array, 0, array_length), &t1[0]);
+    assert_equal(array_get(array, 1, array_length), &t1[1]);
+    assert_equal(array_get(array, 2, array_length), &t1[5]);
 }
 
 void test_setup()

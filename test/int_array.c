@@ -5,8 +5,8 @@ IntArray* array = NULL;
 
 void test_empty() 
 {
-    ASSERT(array != NULL);
-    ASSERT(array->length == 0);
+    assert_not_equal(array, NULL);
+    assert_equal(array->length, 0);
 }
 
 void test_add_elements()
@@ -17,10 +17,10 @@ void test_add_elements()
     int_array_push(array, t2);
     int_array_push(array, t3);
 
-    ASSERT(array->length == 3); 
-    ASSERT(int_array_get(array, 0) == 10);
-    ASSERT(int_array_get(array, 1) == t2);
-    ASSERT(int_array_get(array, 2) == t3);
+    assert_equal(array->length, 3); 
+    assert_equal(int_array_get(array, 0), 10);
+    assert_equal(int_array_get(array, 1), t2);
+    assert_equal(int_array_get(array, 2), t3);
 }
 
 void test_access_boundings() 
@@ -29,27 +29,27 @@ void test_access_boundings()
     int_array_set(array, 5, t1);
 
     for (int i = 0; i < 5; i++) {
-        ASSERT(!int_array_has(array, i));
+        assert_equal(int_array_has(array, i), false);
     }
 
-    ASSERT(int_array_has(array, 5));
-    ASSERT(int_array_get(array, 5) == t1);
-    ASSERT(!int_array_has(array, 200));
+    assert_equal(int_array_has(array, 5), true);
+    assert_equal(int_array_get(array, 5), t1);
+    assert_equal(int_array_has(array, 200), false);
 }
 
 void test_check_position() 
 {
-    ASSERT(!int_array_has(array, 0));
+    assert_equal(int_array_has(array, 0), false);
     int_array_push(array, 1);
-    ASSERT(int_array_has(array, 0));
+    assert_equal(int_array_has(array, 0), true);
 }
 
 void test_delete_position()
 {
     int_array_push(array, 33);
-    ASSERT(int_array_has(array, 0));
+    assert_equal(int_array_has(array, 0), true);
     int_array_delete(array, 0);
-    ASSERT(!int_array_has(array, 0));
+    assert_equal(int_array_has(array, 0), false);
 }
 
 void test_delete_range()
@@ -60,15 +60,15 @@ void test_delete_range()
         int_array_push(array, t1[i]);
     }
 
-    ASSERT(array->length == 6);
+    assert_equal(array->length, 6);
 
     int_array_splice(array, 2, 3);
 
-    ASSERT(array->length == 3);
+    assert_equal(array->length, 3);
 
-    ASSERT(int_array_get(array, 0) == t1[0]);
-    ASSERT(int_array_get(array, 1) == t1[1]);
-    ASSERT(int_array_get(array, 2) == t1[5]);
+    assert_equal(int_array_get(array, 0), t1[0]);
+    assert_equal(int_array_get(array, 1), t1[1]);
+    assert_equal(int_array_get(array, 2), t1[5]);
 }
 
 void test_clear()

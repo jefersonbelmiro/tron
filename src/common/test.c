@@ -184,6 +184,9 @@ static int test_run(int test_index)
             printf("    %s×%s %s\n", ANSI_COLOR_RED, ANSI_COLOR_RESET, item->label);
             printf("%s", globals->buf);
         }
+
+        // clear current result buffer
+        memset(&globals->buf, 0, sizeof(globals->buf));
     }
 
     printf("\n    assertions: %d, failures: %d\n", test->assertion->total, test->assertion->failed);

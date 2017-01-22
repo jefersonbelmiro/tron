@@ -5,8 +5,8 @@ PtrArray* array;
 
 void test_empty() 
 {
-    ASSERT(array != NULL);
-    ASSERT(array->length == 0);
+    assert_not_equal(array, NULL);
+    assert_equal(array->length, 0);
 }
 
 void test_add_elements()
@@ -17,10 +17,10 @@ void test_add_elements()
     ptr_array_push(array, &t2);
     ptr_array_push(array, &t3);
 
-    ASSERT(array->length == 3); 
-    ASSERT(*((int*) ptr_array_get(array, 0)) == 10);
-    ASSERT(*((int*) ptr_array_get(array, 1)) == t2);
-    ASSERT(ptr_array_get(array, 2) == &t3);
+    assert_equal(array->length, 3); 
+    assert_equal(*((int*) ptr_array_get(array, 0)), 10);
+    assert_equal(*((int*) ptr_array_get(array, 1)), t2);
+    assert_equal(ptr_array_get(array, 2), &t3);
 }
 
 void test_access_boundings() 
@@ -29,30 +29,30 @@ void test_access_boundings()
     ptr_array_set(array, 5, &t1);
 
     for (int i = 0; i < 5; i++) {
-        ASSERT(!ptr_array_has(array, i));
-        ASSERT(ptr_array_get(array, i) == NULL);
+        assert_equal(ptr_array_has(array, i), false);
+        assert_equal(ptr_array_get(array, i), NULL);
     }
 
-    ASSERT(ptr_array_has(array, 5));
-    ASSERT(!ptr_array_has(array, 200));
+    assert_equal(ptr_array_has(array, 5), true);
+    assert_equal(ptr_array_has(array, 200), false);
 
-    ASSERT(ptr_array_get(array, 5) == &t1);
-    ASSERT(ptr_array_get(array, 200) == NULL);
+    assert_equal(ptr_array_get(array, 5), &t1);
+    assert_equal(ptr_array_get(array, 200), NULL);
 }
 
 void test_check_position() 
 {
-    ASSERT(!ptr_array_has(array, 0));
+    assert_equal(ptr_array_has(array, 0), false);
     ptr_array_push(array, (void*) 1);
-    ASSERT(ptr_array_has(array, 0));
+    assert_equal(ptr_array_has(array, 0), true);
 }
 
 void test_delete_position()
 {
     ptr_array_push(array, (void *) 33);
-    ASSERT(ptr_array_has(array, 0));
+    assert_equal(ptr_array_has(array, 0), true);
     ptr_array_delete(array, 0);
-    ASSERT(!ptr_array_has(array, 0));
+    assert_equal(ptr_array_has(array, 0), false);
 }
 
 void test_delete_range()
@@ -63,15 +63,15 @@ void test_delete_range()
         ptr_array_push(array, &t1[i]);
     }
 
-    ASSERT(array->length == 6);
+    assert_equal(array->length, 6);
 
     ptr_array_splice(array, 2, 3);
 
-    ASSERT(array->length == 3);
+    assert_equal(array->length, 3);
 
-    ASSERT(ptr_array_get(array, 0) == &t1[0]);
-    ASSERT(ptr_array_get(array, 1) == &t1[1]);
-    ASSERT(ptr_array_get(array, 2) == &t1[5]);
+    assert_equal(ptr_array_get(array, 0), &t1[0]);
+    assert_equal(ptr_array_get(array, 1), &t1[1]);
+    assert_equal(ptr_array_get(array, 2), &t1[5]);
 }
 
 void test_clear()

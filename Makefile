@@ -1,6 +1,7 @@
 CC = gcc -std=gnu99
 FLAG_LIB = -lncurses
 FLAG_DEBUG = -Wall -Werror -ggdb
+FLAG_GCOV = -O0 -fprofile-arcs -ftest-coverage -g
 FLAG_INC = -I inc
 SOURCES:=$(shell find src -type f | grep -v "main.c")
 
@@ -10,7 +11,7 @@ all:
 
 debug: 
 	mkdir -p bin/
-	$(CC) $(SOURCES) src/main.c -o bin/debug $(FLAG_LIB) $(FLAG_INC) $(FLAG_DEBUG) 
+	$(CC) $(SOURCES) src/main.c -o bin/debug $(FLAG_LIB) $(FLAG_INC) $(FLAG_DEBUG)
 
 clean:
 	rm -rf bin/*
