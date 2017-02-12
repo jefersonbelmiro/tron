@@ -27,6 +27,10 @@ test:
 		bin/test/$$key;\
 	done
 
+test_negamax:
+	$(CC) $(SOURCES) test/negamax.c -o bin/test/negamax $(FLAG_LIB) $(FLAG_INC) $(FLAG_DEBUG)
+	bin/test/negamax
+
 format: 
 	astyle --style="k&r" $(shell find src -type f) $(shell find inc -type f)
 	find . -name '*.orig' -delete

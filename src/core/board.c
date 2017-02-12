@@ -13,5 +13,6 @@ Board* board_create(int width, int height)
 
 void board_destroy(Board* board)
 {
+    /* free(board->map); */
     free(board);
 }
