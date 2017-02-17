@@ -24,6 +24,38 @@ void test_dist_map()
     } 
 }
 
+void test_evaluate_position()
+{
+    int alpha_x = width/2;
+    int alpha_y = height/2;
+    int alpha_position = alpha_x + alpha_y * width;
+
+    int beta_x = 1;
+    int beta_y = 1;
+    int beta_position = beta_x + beta_y * width; 
+
+    int alpha_move = 1;
+
+    int best_move = negamax(
+        map, 
+        width, 
+        height, 
+        alpha_position, 
+        beta_position, 
+        6,
+        -99999, 
+        99999,
+        alpha_move
+    );
+
+    printf("move: %d -> %d\n", alpha_move, best_move);
+}
+
+void test_negamax()
+{
+    
+}
+
 void test_setup()
 {
     map = malloc(sizeof(int) * width * height);
@@ -41,6 +73,8 @@ int main(int argc, char* argv[])
         setup(test_setup);
         teardown(test_teardown);
         it("test unit-cost specialization of dijkstra's algorithm", test_dist_map);
+        it("test evaluate position", test_evaluate_position);
+        it("test negamax algorithm", test_negamax);
     });
 
     return Test_run();
