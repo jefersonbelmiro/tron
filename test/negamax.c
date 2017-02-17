@@ -26,6 +26,20 @@ void test_dist_map()
 
 void test_evaluate_position()
 {
+    int alpha_x = width/2;
+    int alpha_y = height/2;
+    int alpha_position = alpha_x + alpha_y * width;
+
+    int beta_x = 1;
+    int beta_y = 1;
+    int beta_position = beta_x + beta_y * width; 
+
+    map[alpha_position] = 1;
+    map[beta_position] = 1;
+
+    int score = negamax_evaluate_position(map, width, height, alpha_position, beta_position);
+
+    assert_equal(score, 16);
 }
 
 void test_negamax()
