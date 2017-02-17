@@ -26,6 +26,10 @@ void test_dist_map()
 
 void test_evaluate_position()
 {
+}
+
+void test_negamax()
+{
     int alpha_x = width/2;
     int alpha_y = height/2;
     int alpha_position = alpha_x + alpha_y * width;
@@ -35,6 +39,9 @@ void test_evaluate_position()
     int beta_position = beta_x + beta_y * width; 
 
     int alpha_move = 1;
+
+    map[alpha_position] = 1;
+    map[beta_position] = 1;
 
     int best_move = negamax(
         map, 
@@ -48,17 +55,12 @@ void test_evaluate_position()
         alpha_move
     );
 
-    printf("move: %d -> %d\n", alpha_move, best_move);
-}
-
-void test_negamax()
-{
-    
+    assert_equal(best_move, 2);
 }
 
 void test_setup()
 {
-    map = malloc(sizeof(int) * width * height);
+    map = calloc(width * height, sizeof(int));
 }
 
 void test_teardown()

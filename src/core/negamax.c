@@ -7,7 +7,7 @@ int* negamax_create_dist_map(int* map, int map_width, int map_height, int map_po
     int map_moves[4] = {-1, -map_width, 1, map_width };
     int dist_score = 1;
 
-    int* dist_map = malloc(sizeof(int) * map_length);
+    int* dist_map = calloc(map_length, sizeof(int));
     dist_map[map_position] = 1;
 
     int queue[map_length];
@@ -86,12 +86,9 @@ int negamax_evaluate_position(int* map, int map_width, int map_height, int alpha
             } else {
                 score--;
             }
-            continue; 
-        }
-
-        if (alpha_dist_map[i]) score++;
-        if (beta_dist_map[i]) score--;
-    
+        } 
+        else if (alpha_dist_map[i]) score++;
+        else if (beta_dist_map[i]) score--; 
     }
 
     return score;
@@ -134,5 +131,3 @@ int negamax(int* map, int map_width, int map_height,
 
     return alpha;
 }
-
-
