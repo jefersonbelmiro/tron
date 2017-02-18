@@ -94,12 +94,11 @@ int negamax_evaluate_position(int* map, int map_width, int map_height, int alpha
     return score;
 }
 
-int negamax(int* map, int map_width, int map_height, 
-            int alpha_position, int beta_position, int depth, int alpha, int beta, int best_move)
+static int negamax_evaluate(int* map, int map_width, int map_height, int alpha_position, 
+                            int beta_position, int alpha_move, int depth, int alpha, int beta, int* map_moves)
 {
-    if (depth == 0) return negamax_evaluate_position(map, map_width, map_height, alpha_position, beta_position);
-
-    int map_moves[4] = {-1, -map_width, 1, map_width };
+    if (depth == 0) 
+        return negamax_evaluate_position(map, map_width, map_height, alpha_position, beta_position);
 
     for (int move = 0; move < 4; move++) {
 
@@ -110,13 +109,26 @@ int negamax(int* map, int map_width, int map_height,
         }
 
         map[next_pos] = 1;
-        int score = -negamax(map, map_width, map_height, beta_position, next_pos, depth - 1, -beta, -alpha, -1);
+
+        int score = -negamax_evaluate(
+            map,
+            map_width, 
+            map_height, 
+            beta_position, 
+            next_pos, 
+            -1,
+            depth - 1, 
+            -beta, 
+            -alpha, 
+            map_moves
+        );
+
         map[next_pos] = 0;
 
         if (score > alpha) {
 
             alpha = score;
-            best_move = best_move != -1 ? move : -1;
+            alpha_move = alpha_move != -1 ? move : -1;
 
             // alpha-beta pruning
             if (alpha >= beta) {
@@ -125,9 +137,21 @@ int negamax(int* map, int map_width, int map_height,
         }
     }
 
-    if (best_move != -1) {
-        return best_move;
+    if (alpha_move != -1) {
+        return alpha_move;
     }
 
     return alpha;
+}
+
+int negamax(int* map, int map_width, int map_height, int alpha_position, int beta_position, int alpha_move)
+{
+    int map_moves[4] = {-1, -map_width, 1, map_width };
+    int depth = 6;
+    int alpha = -9999;
+    int beta = 9999;
+
+    return negamax_evaluate(
+        map, map_width, map_height, alpha_position, beta_position, alpha_move, depth, alpha, beta, map_moves
+    );
 }

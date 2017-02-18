@@ -32,7 +32,7 @@ bool window_has_string(int x, int y, char* string)
     char buf[1024];
     mvinnstr(y, x, buf, strlen(string));
     return strcmp(string, buf) == 0;
-} 
+}
 
 void window_refresh()
 {

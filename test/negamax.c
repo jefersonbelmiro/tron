@@ -63,9 +63,6 @@ void test_negamax()
         height, 
         alpha_position, 
         beta_position, 
-        6,
-        -99999, 
-        99999,
         alpha_move
     );
 
