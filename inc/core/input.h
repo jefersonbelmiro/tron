@@ -8,6 +8,7 @@ typedef struct {
 } Input;
 
 Input* input_create();
+void input_update(Input* input);
 void input_destroy(Input* input);
 
 #endif

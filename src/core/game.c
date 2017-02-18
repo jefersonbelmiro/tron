@@ -37,6 +37,7 @@ void game_start(Game* game)
 void static tick(Game* game)
 {
     do {
+        input_update(game->input);
         game->state->update(game);
         game->state->draw(game);
         usleep(FPS);
