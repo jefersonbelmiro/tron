@@ -18,5 +18,7 @@ typedef struct {
 
 Board* board_create(int width, int height);
 void board_destroy(Board* board);
+void board_create_bound(Board* board);
+void board_draw(Board* board);
 
 #endif

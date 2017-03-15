@@ -39,6 +39,11 @@ void window_refresh()
     refresh();
 }
 
+void window_clear()
+{
+    clear();
+}
+
 void window_quit()
 {
     window_restore();

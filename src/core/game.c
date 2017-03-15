@@ -1,13 +1,9 @@
 #include "core/game.h"
 
 void static tick(Game* game);
+void static quit(Game* game);
 
-Game*
-game_create(window, board, input, state)
-Window* window;
-Board* board;
-Input* input;
-State* state;
+Game* game_create(Window* window, Board* board, Input* input, State* state) 
 {
     Game* game = malloc(sizeof(Game));
     game->window = window;
@@ -31,15 +27,33 @@ void game_set_state(Game* game, State* state)
 
 void game_start(Game* game)
 {
+    board_create_bound(game->board);
     tick(game);
 }
 
 void static tick(Game* game)
 {
     do {
+
         input_update(game->input);
+
+        if (game->input->key == 'q' || game->input->key == 'Q') {
+            quit(game);
+        }
+
         game->state->update(game);
         game->state->draw(game);
+
+        window_refresh();
+        window_clear();
+
         usleep(FPS);
+
     } while (true);
+}
+
+void static quit(Game* game)
+{
+    game_destroy(game);
+    exit(0);
 }
