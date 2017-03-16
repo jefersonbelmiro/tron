@@ -4,12 +4,14 @@
 #include <curses.h>
 #include "core/game.h"
 
+static void preload(Game* game);
 static void update(Game* game);
 static void draw(Game* game);
 
 State* play_create()
 {
     State* play = malloc(sizeof(State));
+    play->preload = preload;
     play->update = update;
     play->draw = draw;
     return play;
@@ -18,6 +20,10 @@ State* play_create()
 void play_destroy(State* play)
 {
     free(play);
+}
+
+static void preload(Game* game)
+{
 }
 
 static void update(Game* game)

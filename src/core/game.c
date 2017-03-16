@@ -1,7 +1,8 @@
 #include "core/game.h"
 
-void static tick(Game* game);
-void static quit(Game* game);
+static void tick(Game* game);
+static void quit(Game* game);               
+static void process_next_state(Game* game);
 
 Game* game_create(Window* window, Board* board, Input* input, State* state) 
 {
@@ -10,6 +11,7 @@ Game* game_create(Window* window, Board* board, Input* input, State* state)
     game->board = board;
     game->input = input;
     game->state = state;
+    game->next_state = NULL;
     return game;
 }
 
@@ -22,7 +24,7 @@ void game_destroy(Game* game)
 
 void game_set_state(Game* game, State* state)
 {
-    game->state = state;
+    game->next_state = state;
 }
 
 void game_start(Game* game)
@@ -35,14 +37,27 @@ void static tick(Game* game)
 {
     do {
 
+        if (game->next_state) {
+            process_next_state(game);
+        }
+
         input_update(game->input);
 
         if (game->input->key == 'q' || game->input->key == 'Q') {
             quit(game);
         }
 
-        game->state->update(game);
-        game->state->draw(game);
+        if (game->state->preload) {
+            game->state->preload(game);
+        }
+
+        if (game->state->update) {
+            game->state->update(game);
+        }
+
+        if (game->state->draw) {
+            game->state->draw(game);
+        }
 
         window_refresh();
         window_clear();
@@ -56,4 +71,11 @@ void static quit(Game* game)
 {
     game_destroy(game);
     exit(0);
+}
+
+void static process_next_state(Game* game)
+{
+    free(game->state);
+    game->state = game->next_state;
+    game->next_state = NULL;
 }

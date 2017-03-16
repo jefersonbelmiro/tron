@@ -12,6 +12,7 @@ static void draw_menu(Game* game);
 State* menu_create()
 {
     State* menu = malloc(sizeof(State));
+    menu->preload = NULL;
     menu->update = update;
     menu->draw = draw;
     return menu;
@@ -25,9 +26,7 @@ void menu_destroy(State* menu)
 static void update(Game* game)
 {
     if (game->input->key == KEY_ENTER || game->input->key == 10) {
-
-        menu_destroy(game->state);
-        game->state = play_create();
+        game_set_state(game, play_create());
     }
 }
 

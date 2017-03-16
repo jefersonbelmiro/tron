@@ -22,6 +22,7 @@ struct Game {
     Board* board;
     Input* input;
     State* state;
+    State* next_state;
 };
 
 Game* game_create(Window* window, Board* board, Input* input, State* state);
