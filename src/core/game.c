@@ -47,10 +47,6 @@ void static tick(Game* game)
             quit(game);
         }
 
-        if (game->state->preload) {
-            game->state->preload(game);
-        }
-
         if (game->state->update) {
             game->state->update(game);
         }
@@ -75,7 +71,14 @@ void static quit(Game* game)
 
 void static process_next_state(Game* game)
 {
-    free(game->state);
+    if (game->state->destroy) {
+        game->state->destroy(game, game->state);
+    }
+
     game->state = game->next_state;
     game->next_state = NULL;
+
+    if (game->state->create) {
+        game->state->create(game);
+    } 
 }

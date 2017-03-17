@@ -8,19 +8,16 @@
 static void update(Game* game);
 static void draw(Game* game);
 static void draw_menu(Game* game);
+static void destroy(Game* game, State* menu);
 
 State* menu_create()
 {
-    State* menu = malloc(sizeof(State));
-    menu->preload = NULL;
-    menu->update = update;
-    menu->draw = draw;
-    return menu;
+    return state_create(NULL, update, draw, destroy);
 }
 
-void menu_destroy(State* menu)
+static void destroy(Game* game, State* menu)
 {
-    free(menu);
+    state_destroy(menu);
 }
 
 static void update(Game* game)
