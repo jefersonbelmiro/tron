@@ -24,7 +24,7 @@ enum draw {
 };
 
 Window* window_create(int width, int height);
-void window_draw_char(int x, int y, char value);
+void window_draw_char(int x, int y, int value);
 void window_draw_string(int x, int y, char* value);
 bool window_has_string(int x, int y, char* string);
 void window_refresh();

@@ -17,7 +17,7 @@ Window* window_create(int width, int height)
     return window;
 }
 
-void window_draw_char(int x, int y, char value)
+void window_draw_char(int x, int y, int value)
 {
     mvaddch(y, x, value);
 }

@@ -56,7 +56,6 @@ void static tick(Game* game)
         }
 
         window_refresh();
-        window_clear();
 
         usleep(FPS);
 

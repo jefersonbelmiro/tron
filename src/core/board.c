@@ -21,8 +21,6 @@ void board_destroy(Board* board)
 void board_create_bound(Board* board)
 {
     enum draw { 
-        WALL = '#', 
-        EMPTY = ' ',
         BOUND_CORNER = '+',    
         BOUND_LINE_VERTICAL = '|',
         BOUND_LINE_HORIZONTAL = '-'
