@@ -4,13 +4,13 @@ static void tick(Game* game);
 static void quit(Game* game);               
 static void process_next_state(Game* game);
 
-Game* game_create(Window* window, Board* board, Input* input, State* state) 
+Game* game_create(Window* window, Board* board, Input* input) 
 {
     Game* game = malloc(sizeof(Game));
     game->window = window;
     game->board = board;
     game->input = input;
-    game->state = state;
+    game->state = NULL;
     game->next_state = NULL;
     return game;
 }
@@ -29,7 +29,6 @@ void game_set_state(Game* game, State* state)
 
 void game_start(Game* game)
 {
-    board_create_bound(game->board);
     tick(game);
 }
 
@@ -70,7 +69,7 @@ void static quit(Game* game)
 
 void static process_next_state(Game* game)
 {
-    if (game->state->destroy) {
+    if (game->state && game->state->destroy) {
         game->state->destroy(game, game->state);
     }
 

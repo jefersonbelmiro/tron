@@ -1,5 +1,6 @@
 #include "core/board.h"
 #include "core/window.h"
+#include <string.h>
 
 Board* board_create(int width, int height)
 {
@@ -16,6 +17,11 @@ void board_destroy(Board* board)
 {
     free(board->map);
     free(board);
+}
+
+void board_clear(Board* board)
+{
+    memset(board->map, 0, board->length * sizeof(int));
 }
 
 void board_create_bound(Board* board)

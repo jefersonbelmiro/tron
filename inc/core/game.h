@@ -25,7 +25,7 @@ struct Game {
     State* next_state;
 };
 
-Game* game_create(Window* window, Board* board, Input* input, State* state);
+Game* game_create(Window* window, Board* board, Input* input);
 void game_destroy(Game* game);
 void game_start(Game* game);
 void game_tick(Game* game);

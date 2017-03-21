@@ -2,6 +2,7 @@
 #include "core/window.h"
 #include "core/board.h"
 #include "core/player.h"
+#include "core/ai.h"
 #include "core/game.h"
 #include "common/ptr_array.h"
 #include <curses.h>
@@ -10,8 +11,12 @@ static void create(Game* game);
 static void update(Game* game);
 static void draw(Game* game);
 static void destroy(Game* game, State* play);
+static void draw_game_over(Game* game);
+static void restart(Game* game);
 
-PtrArray* players;
+static PtrArray* players;
+static int survivors = 0;
+static bool game_over = false;
                                           
 State* play_create()
 {
@@ -23,9 +28,15 @@ static void create(Game* game)
     window_clear();
 
     players = ptr_array_create(2);
-    LightCycle* player = player_create(0 + 3 * game->board->width, BLUE, RIGHT);
+
+    int player_pos = 1 * game->board->width;
+    LightCycle* player = player_create(player_pos, BLUE, RIGHT);
+
+    int ai_pos = (game->board->width - 2) + (game->board->height - 2) * game->board->width;
+    LightCycle* ai = ai_create(ai_pos, RED, LEFT);
 
     ptr_array_push(players, player);
+    ptr_array_push(players, ai);
 }
 
 static void destroy(Game* game, State* play)
@@ -36,32 +47,71 @@ static void destroy(Game* game, State* play)
 
 static void update(Game* game)
 {
-    if (game->input->key == KEY_ENTER || game->input->key == 10) {
-        // restart 
+    if (game_over) {
+
+        //restart
+        if (game->input->key == KEY_ENTER || game->input->key == 10) {
+            restart(game);
+        }
+
+        return;
     }
 
     LightCycle* player;
+    survivors = 0;
 
     for (int player_index = 0; player_index < players->length; player_index++) {
 
         player = ptr_array_get(players, player_index);
-        player->update(game, player);
 
+        if (!player->alive) {
+
+            game->board->map[player->position] = '#' | COLOR_PAIR(WHITE); 
+            continue;
+        }
+
+        survivors++;
+
+        player->update(game, player, players);
         game->board->map[player->position] = '#' | COLOR_PAIR(player->color); 
     }
 
-    // update players
+    if (survivors <= 1) {
+        game_over = true;
+    }
 }
 
 static void draw(Game* game)
 {
     board_draw(game->board);
 
-    // draw players
+    if (game_over) {
+        draw_game_over(game);
+    } 
+}
 
-    static int count = 0;
-    count++;
-    char buf[100];
-    sprintf(buf, "play.c: %d | [%dx%d]", count, game->board->width, game->board->height);
-    window_draw_string(3, 0, buf);
+static void draw_game_over(Game* game)
+{
+    char *text = " YOU LOST ";
+    if (((LightCycle *) ptr_array_get(players, 0))->alive) {
+        text = " YOU WON ";
+    }
+    int x = (game->board->width / 2) - strlen(text)/2;
+    attron(COLOR_PAIR(COLOR_WHITE));
+    window_draw_string(x, 0, text); 
+    attroff(COLOR_PAIR(COLOR_WHITE));
+}
+
+static void restart(Game* game)
+{
+    for (int player_index = 0; player_index < players->length; player_index++) {
+        LightCycle* player = ptr_array_get(players, player_index);
+        light_cycle_destroy(player);
+    }
+
+    board_clear(game->board);
+    board_create_bound(game->board);
+
+    game_over = false;
+    create(game);
 }

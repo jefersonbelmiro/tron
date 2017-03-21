@@ -100,11 +100,13 @@ static int negamax_evaluate(int* map, int map_width, int map_height, int alpha_p
     if (depth == 0) 
         return negamax_evaluate_position(map, map_width, map_height, alpha_position, beta_position);
 
+    int map_length = map_width * map_height;
+
     for (int move = 0; move < 4; move++) {
 
         int next_pos = alpha_position + map_moves[move];
 
-        if (map[next_pos]) {
+        if (next_pos < 0 || next_pos > map_length || map[next_pos]) {
             continue;
         }
 

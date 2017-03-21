@@ -5,6 +5,7 @@
 #include "core/game.h"
 #include <curses.h>
 
+static void create(Game* game);
 static void update(Game* game);
 static void draw(Game* game);
 static void draw_menu(Game* game);
@@ -12,7 +13,12 @@ static void destroy(Game* game, State* menu);
 
 State* menu_create()
 {
-    return state_create(NULL, update, draw, destroy);
+    return state_create(create, update, draw, destroy);
+}
+
+static void create(Game* game)
+{
+    board_create_bound(game->board);
 }
 
 static void destroy(Game* game, State* menu)
