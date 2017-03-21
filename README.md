@@ -2,7 +2,7 @@
 
 The classic arcade game TRON implemented in C using the ncurses library. 
 
-[![asciicast](https://asciinema.org/a/dxtfa4y6gey6vp9nvdwoexyg9.png)](https://asciinema.org/a/dxtfa4y6gey6vp9nvdwoexyg9?autoplay=1)
+[![asciicast](https://asciinema.org/a/7qzzspamyqb17efz9ykf58iou.png)](https://asciinema.org/a/7qzzspamyqb17efz9ykf58iou?autoplay=1)
 
 ### Features
   - A two player game mode.

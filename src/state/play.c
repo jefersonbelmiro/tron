@@ -167,7 +167,7 @@ static void start_countdown(Game* game, int count)
     while(count-- > 0) {
 
         char text[20];
-        sprintf(text, "GAME START IN %d", count);
+        sprintf(text, " START IN %d ", count);
         int x = (game->board->width / 2) - strlen(text)/2;
 
         attron(COLOR_PAIR(COLOR_WHITE));
