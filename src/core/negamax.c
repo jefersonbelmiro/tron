@@ -1,6 +1,6 @@
 #include "core/negamax.h"
 
-// unit-cost specialization of dijkstra's algorithm 
+// unit-cost specialization of dijkstra's algorithm, using queues
 int* negamax_create_dist_map(int* map, int map_width, int map_height, int map_position) 
 {
     int map_length = map_width * map_height;
@@ -66,6 +66,8 @@ void negamax_print_dist_map(int* dist_map, int map_width, int map_height)
     } 
 }
 
+// Voronoi diagram
+// showing the regions of a map that are closest to a given player
 int negamax_evaluate_position(int* map, int map_width, int map_height, int alpha_position, int beta_position)
 {
     int score = 0;
