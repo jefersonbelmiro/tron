@@ -1,12 +1,6 @@
 ## tron.c
 
-roadmap:
-- version 1.0 (current)    
-    - ncurses                  
-    - player vs 1 AI(negamax)    
-    - web version, with wasm or asm.js
-- version 2.0
-    - SDL
-    - maxn(negamax applied for more than 2 players)
-    - player vs 3 AI
-    - sounds
+The classic arcade game TRON implemented in C
+
+[![asciicast](https://asciinema.org/a/czpht7bfs36zqz78kptlh9rmn.png)](https://asciinema.org/a/czpht7bfs36zqz78kptlh9rmn)
+
