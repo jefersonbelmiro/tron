@@ -12,6 +12,10 @@ static void update(Game* game);
 static void draw(Game* game);
 static void destroy(Game* game, State* play);
 static void draw_game_over(Game* game);
+static int generate_random_number(int min, int max);
+static int generate_random_positions(int* alpha_position, int* beta_position, Game* game);
+static void create_players(Game* game);
+static void start_countdown(Game* game, int count);
 static void restart(Game* game);
 
 static PtrArray* players;
@@ -26,17 +30,8 @@ State* play_create()
 static void create(Game* game)
 {
     window_clear();
-
-    players = ptr_array_create(2);
-
-    int player_pos = 1 * game->board->width;
-    LightCycle* player = player_create(player_pos, BLUE, RIGHT);
-
-    int ai_pos = (game->board->width - 2) + (game->board->height - 2) * game->board->width;
-    LightCycle* ai = ai_create(ai_pos, RED, LEFT);
-
-    ptr_array_push(players, player);
-    ptr_array_push(players, ai);
+    create_players(game);
+    start_countdown(game, 3);
 }
 
 static void destroy(Game* game, State* play)
@@ -114,4 +109,72 @@ static void restart(Game* game)
 
     game_over = false;
     create(game);
+}
+
+static int generate_random_number(int min, int max)
+{
+    if (max <= min) {
+        return min;
+    }
+    return (rand() % (max - min)) + min;
+}
+
+static int generate_random_positions(int* alpha_position, int* beta_position, Game* game)
+{
+    srand(time(NULL));
+    int alpha_x, alpha_y, beta_x = 0, beta_y = 0;
+    int min_x = 3;
+    int min_y = 3;
+    int max_x = game->board->width - 4;
+    int max_y = game->board->height - 4;
+    int min_dist = 5;
+
+    alpha_x = generate_random_number(min_x, max_x);
+    alpha_y = generate_random_number(min_y, max_y);
+    *alpha_position = alpha_x + alpha_y * game->board->width;
+
+    do {
+
+        beta_x = generate_random_number(min_x, max_x);
+        beta_y = generate_random_number(min_y, max_y);
+
+    } while( abs(alpha_x - beta_x) < min_dist || abs(alpha_y - beta_y) < min_dist);
+
+    *beta_position = beta_x + beta_y * game->board->width;
+}
+
+static void create_players(Game* game)
+{
+    players = ptr_array_create(2);
+
+    int player_pos, ai_pos;
+    generate_random_positions(&player_pos, &ai_pos, game);
+
+    LightCycle* player = player_create(player_pos, BLUE, RIGHT);
+    LightCycle* ai = ai_create(ai_pos, RED, LEFT);
+
+    ptr_array_push(players, player);
+    ptr_array_push(players, ai);
+
+    game->board->map[player_pos] = '#' | COLOR_PAIR(player->color); 
+    game->board->map[ai_pos] = '#' | COLOR_PAIR(ai->color); 
+}
+
+static void start_countdown(Game* game, int count)
+{
+    board_draw(game->board);
+
+    while(count-- > 0) {
+
+        char text[20];
+        sprintf(text, " START IN %d ", count);
+        int x = (game->board->width / 2) - strlen(text)/2;
+
+        attron(COLOR_PAIR(COLOR_WHITE));
+        window_draw_string(x, 0, text); 
+        attroff(COLOR_PAIR(COLOR_WHITE));
+        window_refresh();
+
+        sleep(1);
+    }
 }
